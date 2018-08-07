@@ -20,7 +20,7 @@ RCT_EXPORT_MODULE(RongCloudIMLibModule)
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"onRongMessageReceived", @"onMessageRecalled"];
+     return @[@"onRongMessageReceived", @"onMessageRecalled",@"onChatRoomJoining",@"onChatRoomJoined",@"onChatRoomJoinFailed",@"onChatRoomQuited"];
 }
 
 #pragma mark RongCloud Init
@@ -30,6 +30,7 @@ RCT_EXPORT_METHOD(initWithAppKey:(NSString *)appkey) {
     [[self getClient] initWithAppKey:appkey];
     
     [[self getClient] setReceiveMessageDelegate:self object:nil];
+    [[self getClient] setChatRoomStatusDelegate:self];
 }
 
 #pragma mark RongCloud Connect And Disconnect
@@ -646,6 +647,69 @@ RCT_EXPORT_METHOD(setDiscussionInviteStatus:(NSString *)discussionId
         reject([self getRCErrorCode:status],[self getRCErrorCode:status],nil);
     }];
 }
+#pragma mark ---- 聊天室
+RCT_EXPORT_METHOD(joinChatRoom:(NSString *)targetId
+                  messageCount:(int)messageCount
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+    
+    [RCTRongCloudChatRoom joinChatRoom:targetId messageCount:messageCount success:^{
+        resolve(@"success");
+    } error:^(RCErrorCode status) {
+        reject([self getRCErrorCode:status],[self getRCErrorCode:status],nil);
+    }];
+}
+
+RCT_EXPORT_METHOD(joinExistChatRoom:(NSString *)targetId
+                  messageCount:(int)messageCount
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+    [RCTRongCloudChatRoom joinExistChatRoom:targetId messageCount:messageCount success:^{
+        resolve(@"success");
+    } error:^(RCErrorCode status) {
+        reject([self getRCErrorCode:status],[self getRCErrorCode:status],nil);
+    }];
+}
+
+RCT_EXPORT_METHOD(quitChatRoom:(NSString *)targetId
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+    
+    
+    [RCTRongCloudChatRoom quitChatRoom:targetId success:^{
+        resolve(@"success");
+    } error:^(RCErrorCode status) {
+        reject([self getRCErrorCode:status],[self getRCErrorCode:status],nil);
+    }];
+}
+
+RCT_EXPORT_METHOD(getChatRoomInfo:(NSString *)targetId
+                  count:(int)count
+                  order:(RCChatRoomMemberOrder)order
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+    [RCTRongCloudChatRoom getChatRoomInfo:targetId count:count order:order success:^(RCChatRoomInfo *chatRoomInfo) {
+        resolve(chatRoomInfo);
+    } error:^(RCErrorCode status) {
+        reject([self getRCErrorCode:status],[self getRCErrorCode:status],nil);
+    }];
+}
+
+RCT_EXPORT_METHOD(getRemoteChatroomHistoryMessages:(NSString *)targetId
+                  recordTime:(long long)recordTime
+                  count:(int)count
+                  order:(RCTimestampOrder)order
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject){
+    [RCTRongCloudChatRoom getRemoteChatroomHistoryMessages:targetId recordTime:recordTime count:count order:order success:^(NSArray *messages, long long syncTime) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        dict[@"messages"] = messages;
+        dict[@"syncTime"] = @(syncTime);
+        resolve(dict);
+    } error:^(RCErrorCode status) {
+        reject([self getRCErrorCode:status],[self getRCErrorCode:status],nil);
+    }];
+}
 
 
 #pragma mark  RongCloud  Blacklist  黑名单
@@ -709,7 +773,33 @@ RCT_REMAP_METHOD(getBlacklist,
         reject([self getRCErrorCode:status],[self getRCErrorCode:status],nil);
     }];
 }
+#pragma mark 聊天室代理方法
+- (void)onChatRoomJoining:(NSString *)chatroomId{
+    NSMutableDictionary *body = [self getEmptyBody];
+    body[@"chatroomId"] = chatroomId;
+    [self sendEventWithName:@"onChatRoomJoining" body:body];
+}
 
+- (void)onChatRoomJoined:(NSString *)chatroomId{
+    NSMutableDictionary *body = [self getEmptyBody];
+    body[@"chatroomId"] = chatroomId;
+    [self sendEventWithName:@"onChatRoomJoined" body:body];
+}
+
+
+- (void)onChatRoomJoinFailed:(NSString *)chatroomId errorCode:(RCErrorCode)errorCode{
+    NSMutableDictionary *body = [self getEmptyBody];
+    body[@"chatroomId"] = chatroomId;
+    body[@"errorCode"] = [self getRCErrorCode:errorCode];
+    [self sendEventWithName:@"onChatRoomJoinFailed" body:body];
+}
+
+
+- (void)onChatRoomQuited:(NSString *)chatroomId{
+    NSMutableDictionary *body = [self getEmptyBody];
+    body[@"chatroomId"] = chatroomId;
+    [self sendEventWithName:@"onChatRoomQuited" body:body];
+}
 #pragma mark RongCloud OnReceived New Message
 
 - (void)onMessageRecalled:(long)messageId{

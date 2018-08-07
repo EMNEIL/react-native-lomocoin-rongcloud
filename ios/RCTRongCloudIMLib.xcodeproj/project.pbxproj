@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EAA6DF821196CD800D8A68E /* RCTRongCloudChatRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAA6DF721196CD800D8A68E /* RCTRongCloudChatRoom.m */; };
+		2EAA6DFD21196D4300D8A68E /* RongIMLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EAA6DFA21196D4300D8A68E /* RongIMLib.framework */; };
+		2EAA6DFE21196D4300D8A68E /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EAA6DFB21196D4300D8A68E /* libopencore-amrnb.a */; };
 		A48B177820AD8324001B38A2 /* RCTRongCloudDiscussion.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B177420AD8323001B38A2 /* RCTRongCloudDiscussion.m */; };
 		A48B177920AD8324001B38A2 /* RCTRongCloudMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B177720AD8324001B38A2 /* RCTRongCloudMessage.m */; };
 		A4FDDBA91FE7B7D9008557F1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4FDDBA81FE7B7D9008557F1 /* UIKit.framework */; };
@@ -45,6 +48,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2EAA6DF621196CD800D8A68E /* RCTRongCloudChatRoom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTRongCloudChatRoom.h; sourceTree = "<group>"; };
+		2EAA6DF721196CD800D8A68E /* RCTRongCloudChatRoom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTRongCloudChatRoom.m; sourceTree = "<group>"; };
+		2EAA6DFA21196D4300D8A68E /* RongIMLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RongIMLib.framework; sourceTree = "<group>"; };
+		2EAA6DFB21196D4300D8A68E /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		2EAA6DFC21196D4300D8A68E /* RCConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RCConfig.plist; sourceTree = "<group>"; };
 		A48B177420AD8323001B38A2 /* RCTRongCloudDiscussion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTRongCloudDiscussion.m; sourceTree = "<group>"; };
 		A48B177520AD8324001B38A2 /* RCTRongCloudDiscussion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTRongCloudDiscussion.h; sourceTree = "<group>"; };
 		A48B177620AD8324001B38A2 /* RCTRongCloudMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTRongCloudMessage.h; sourceTree = "<group>"; };
@@ -77,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EAA6DFD21196D4300D8A68E /* RongIMLib.framework in Frameworks */,
 				A4FDDBCB1FE7B899008557F1 /* Photos.framework in Frameworks */,
 				A4FDDBC91FE7B891008557F1 /* SafariServices.framework in Frameworks */,
 				A4FDDBC71FE7B88A008557F1 /* AssetsLibrary.framework in Frameworks */,
@@ -89,6 +98,7 @@
 				A4FDDBB91FE7B84D008557F1 /* CoreMedia.framework in Frameworks */,
 				A4FDDBB71FE7B846008557F1 /* CoreTelephony.framework in Frameworks */,
 				A4FDDBB51FE7B83D008557F1 /* CoreVideo.framework in Frameworks */,
+				2EAA6DFE21196D4300D8A68E /* libopencore-amrnb.a in Frameworks */,
 				A4FDDBB31FE7B837008557F1 /* ImageIO.framework in Frameworks */,
 				A4FDDBB11FE7B82C008557F1 /* MapKit.framework in Frameworks */,
 				A4FDDBAF1FE7B823008557F1 /* OpenGLES.framework in Frameworks */,
@@ -101,6 +111,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2EAA6DF921196D4300D8A68E /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				2EAA6DFA21196D4300D8A68E /* RongIMLib.framework */,
+				2EAA6DFB21196D4300D8A68E /* libopencore-amrnb.a */,
+				2EAA6DFC21196D4300D8A68E /* RCConfig.plist */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		A4D8E84A1F25F53400F73692 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +149,7 @@
 		EF631A8A1CC22A4500AC9715 = {
 			isa = PBXGroup;
 			children = (
+				2EAA6DF921196D4300D8A68E /* lib */,
 				EF631A951CC22A4600AC9715 /* RCTRongCloudIMLib */,
 				EF631A941CC22A4600AC9715 /* Products */,
 				A4D8E84A1F25F53400F73692 /* Frameworks */,
@@ -152,6 +173,8 @@
 				A48B177420AD8323001B38A2 /* RCTRongCloudDiscussion.m */,
 				A48B177620AD8324001B38A2 /* RCTRongCloudMessage.h */,
 				A48B177720AD8324001B38A2 /* RCTRongCloudMessage.m */,
+				2EAA6DF621196CD800D8A68E /* RCTRongCloudChatRoom.h */,
+				2EAA6DF721196CD800D8A68E /* RCTRongCloudChatRoom.m */,
 			);
 			path = RCTRongCloudIMLib;
 			sourceTree = "<group>";
@@ -212,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EAA6DF821196CD800D8A68E /* RCTRongCloudChatRoom.m in Sources */,
 				EF631A991CC22A4600AC9715 /* RCTRongCloudIMLib.m in Sources */,
 				A48B177820AD8324001B38A2 /* RCTRongCloudDiscussion.m in Sources */,
 				A48B177920AD8324001B38A2 /* RCTRongCloudMessage.m in Sources */,
@@ -304,10 +328,16 @@
 		EF631A9D1CC22A4600AC9715 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/lib\"",
+					"$(PROJECT_DIR)/lib",
+				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../react-native/React";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/lib\"",
+					"$(PROJECT_DIR)/lib",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -317,10 +347,16 @@
 		EF631A9E1CC22A4600AC9715 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/lib\"",
+					"$(PROJECT_DIR)/lib",
+				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../react-native/React";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/lib\"";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/lib\"",
+					"$(PROJECT_DIR)/lib",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
