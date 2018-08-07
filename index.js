@@ -5,16 +5,28 @@ import {
     NativeEventEmitter,
     Platform
 }
-    from 'react-native';
+from 'react-native';
 
 const RongCloudIMLib = NativeModules.RongCloudIMLibModule;
 
-var _onRongCloudMessageReceived = function (resp) {
+var _onRongCloudMessageReceived = function(resp) {
     console.log("融云接受消息:" + JSON.stringify(resp));
 }
 
-var _onMessageRecalled = function (resp) {
+var _onMessageRecalled = function(resp) {
     console.log("融云收到撤回消息:" + JSON.stringify(resp));
+}
+var _onChatRoomJoining = function(resp) {
+    console.log("融云开始加入聊天室的回调:" + JSON.stringify(resp));
+}
+var _onChatRoomJoined = function(resp) {
+    console.log("融云加入聊天室成功的回调:" + JSON.stringify(resp));
+}
+var _onChatRoomJoinFailed = function(resp) {
+    console.log("融云加入聊天室失败的回调:" + JSON.stringify(resp));
+}
+var _onChatRoomQuited = function(resp) {
+    console.log("融云退出聊天室成功的回调:" + JSON.stringify(resp));
 }
 
 // DeviceEventEmitter.addListener('onRongMessageReceived', (resp) => {
@@ -23,17 +35,46 @@ var _onMessageRecalled = function (resp) {
 
 const RongCloudIMLibEmitter = new NativeEventEmitter(RongCloudIMLib);
 
+//消息内容的监听
 const messageSubscription = RongCloudIMLibEmitter.addListener(
     'onRongMessageReceived',
     (resp) => {
-        typeof (_onRongCloudMessageReceived) === 'function' && _onRongCloudMessageReceived(resp);
+        typeof(_onRongCloudMessageReceived) === 'function' && _onRongCloudMessageReceived(resp);
     }
 );
 
 const recallMessageSubscription = RongCloudIMLibEmitter.addListener(
     'onMessageRecalled',
     (resp) => {
-        typeof (_onMessageRecalled) === 'function' && _onMessageRecalled(resp);
+        typeof(_onMessageRecalled) === 'function' && _onMessageRecalled(resp);
+    }
+);
+
+//聊天室状态的监听
+const chatRoomJoiningSubscription = RongCloudIMLibEmitter.addListener(
+    'onChatRoomJoining',
+    (resp) => {
+        typeof(_onChatRoomJoining) === 'function' && _onChatRoomJoining(resp);
+    }
+);
+
+const chatRoomJoinedSubscription = RongCloudIMLibEmitter.addListener(
+    'onChatRoomJoined',
+    (resp) => {
+        typeof(_onChatRoomJoined) === 'function' && _onChatRoomJoined(resp);
+    }
+);
+
+const chatRoomJoinFailedSubscription = RongCloudIMLibEmitter.addListener(
+    'onChatRoomJoinFailed',
+    (resp) => {
+        typeof(_onChatRoomJoinFailed) === 'function' && _onChatRoomJoinFailed(resp);
+    }
+);
+const chatRoomJoinQuitedSubscription = RongCloudIMLibEmitter.addListener(
+    'onChatRoomQuited',
+    (resp) => {
+        typeof(_onChatRoomQuited) === 'function' && _onChatRoomQuited(resp);
     }
 );
 
@@ -47,10 +88,10 @@ const ConversationType = {
 export default {
     ConversationType: ConversationType,
     /**
-      * SDK Init           初始化
-      * Connect and Disconnect 连接与断开服务器
-      * Received Message   接受新消息
-      */
+     * SDK Init           初始化
+     * Connect and Disconnect 连接与断开服务器
+     * Received Message   接受新消息
+     */
     initWithAppKey(appKey) {
         return RongCloudIMLib.initWithAppKey(appKey);
     },
@@ -80,8 +121,8 @@ export default {
 
 
     /**
-      * Unread Message 未读消息
-      */
+     * Unread Message 未读消息
+     */
     getTotalUnreadCount() {
         // 获取全部未读消息数量（此消息数量为SDK本地查询到的未读消息数（有可能包含已退出群组的消息数量））
         return RongCloudIMLib.getTotalUnreadCount();
@@ -100,8 +141,8 @@ export default {
 
 
     /**
-      * Send Message 消息发送
-      */
+     * Send Message 消息发送
+     */
     sendTextMessage(conversationType, targetId, content, pushContent, pushData, extra) {
         return RongCloudIMLib.sendTextMessage(conversationType, targetId, content, pushContent, pushData, extra);
     },
@@ -125,16 +166,16 @@ export default {
     },
 
     /**
-      * Recall Message 消息撤回
-      */
-     recallMessage(message, push) {
+     * Recall Message 消息撤回
+     */
+    recallMessage(message, push) {
         return RongCloudIMLib.recallMessage(message, push);
     },
 
 
     /**
-      * Message Operation 消息操作
-      */
+     * Message Operation 消息操作
+     */
     getLatestMessages(type, targetId, count) {
         return RongCloudIMLib.getLatestMessages(type, targetId, count);
     },
@@ -152,8 +193,8 @@ export default {
     },
 
     /**
-      * Conversation List Operation 会话列表操作
-      */
+     * Conversation List Operation 会话列表操作
+     */
     getConversationList() {
         return RongCloudIMLib.getConversationList();
     },
@@ -168,8 +209,8 @@ export default {
     },
 
     /**
-      * Conversation Draft 会话草稿操作
-      */
+     * Conversation Draft 会话草稿操作
+     */
     getTextMessageDraft(conversationType, targetId) {
         return RongCloudIMLib.getTextMessageDraft(conversationType, targetId);
     },
@@ -179,10 +220,10 @@ export default {
     clearTextMessageDraft(conversationType, targetId) {
         return RongCloudIMLib.clearTextMessageDraft(conversationType, targetId);
     },
-    
+
     /**
-      * Delete Messages 删除消息
-      */ 
+     * Delete Messages 删除消息
+     */
     removeConversation(conversationType, targetId) {
         return RongCloudIMLib.removeConversation(conversationType, targetId);
     },
@@ -198,8 +239,8 @@ export default {
 
 
     /**
-      * Conversation Push Notification 会话消息提醒
-      */
+     * Conversation Push Notification 会话消息提醒
+     */
     setConversationNotificationStatus(conversationType, targetId, isBlocked) {
         //设置会话消息提醒 isBlocked（true 屏蔽  false 新消息提醒）  （return  0:（屏蔽） 1:（新消息提醒））
         return RongCloudIMLib.setConversationNotificationStatus(conversationType, targetId, isBlocked);
@@ -210,8 +251,8 @@ export default {
     },
 
     /**
-      * Global Push Notification 全局消息提醒
-      */
+     * Global Push Notification 全局消息提醒
+     */
     screenGlobalNotification() {
         //屏蔽全局新消息提醒
         return RongCloudIMLib.screenGlobalNotification();
@@ -224,11 +265,11 @@ export default {
         //获取全局新消息提醒状态 （ return  0:（屏蔽） 1:（新消息提醒））
         return RongCloudIMLib.getGlobalNotificationStatus();
     },
-    
+
 
     /**
-      * Discussion 讨论组
-      */
+     * Discussion 讨论组
+     */
     createDiscussion(name, userIdList) {
         // 设置的讨论组名称长度不能超过40个字符，否则将会截断为前40个字符。
         return RongCloudIMLib.createDiscussion(name, userIdList);
@@ -256,10 +297,10 @@ export default {
         return RongCloudIMLib.setDiscussionInviteStatus(discussionId, isOpen);
     },
 
-    
+
     /**
-      * Black List 黑名单
-      */
+     * Black List 黑名单
+     */
     addToBlacklist(userId) {
         return RongCloudIMLib.addToBlacklist(userId);
     },
@@ -272,4 +313,45 @@ export default {
     getBlacklist() {
         return RongCloudIMLib.getBlacklist();
     },
+
+
+    /**
+     * chatroom 聊天室
+     */
+
+    //状态监听
+    onChatRoomJoining(callback) {
+        _onChatRoomJoining = callback;
+    },
+    onChatRoomJoined(callback) {
+        _onChatRoomJoined = callback;
+    },
+    onChatRoomJoinFailed(callback) {
+        _onChatRoomJoinFailed = callback;
+    },
+    onChatRoomQuited(callback) {
+        _onChatRoomQuited = callback;
+    },
+
+    //聊天室方法
+    joinChatRoom(targetId, messageCount) {
+        return RongCloudIMLib.joinChatRoom(targetId, messageCount)
+    },
+
+    joinExistChatRoom(targetId, messageCount) {
+        return RongCloudIMLib.joinExistChatRoom(targetId, messageCount)
+    },
+
+    quitChatRoom(targetId) {
+        return RongCloudIMLib.quitChatRoom(targetId)
+    },
+
+    getChatRoomInfo(targetId, count.order) {
+        return RongCloudIMLib.getChatRoomInfo(targetId, count, order)
+    }
+    getRemoteChatroomHistoryMessages(targetId, recordTime, count, order) {
+        return RongCloudIMLib.getRemoteChatroomHistoryMessages(targetId, recordTime, count, order)
+    }
+
+
 };
