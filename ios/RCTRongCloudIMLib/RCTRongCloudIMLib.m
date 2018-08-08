@@ -10,7 +10,7 @@
 
 #import "RCTRongCloudDiscussion.h"
 #import "RCTRongCloudMessage.h"
-
+#import "RCTRongCloudChatRoom.h"
 @implementation RCTRongCloudIMLib
 
 @synthesize bridge = _bridge;

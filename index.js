@@ -346,9 +346,9 @@ export default {
         return RongCloudIMLib.quitChatRoom(targetId)
     },
 
-    getChatRoomInfo(targetId, count.order) {
+    getChatRoomInfo(targetId, count,order) {
         return RongCloudIMLib.getChatRoomInfo(targetId, count, order)
-    }
+    },
     getRemoteChatroomHistoryMessages(targetId, recordTime, count, order) {
         return RongCloudIMLib.getRemoteChatroomHistoryMessages(targetId, recordTime, count, order)
     }
